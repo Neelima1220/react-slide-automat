@@ -27,11 +27,12 @@ const imgData = [
 export default function App() {
   const [data, setData] = React.useState(imgData);
   const [selected, setSelected] = React.useState(0);
+  const [showBig, setShowBig] = React.useState(false);
 
   React.useEffect(() => {
     const n = setTimeout(() => {
       goNext();
-    }, 2000);
+    }, 3000);
     return () => {
       clearInterval(n);
     };
@@ -54,6 +55,37 @@ export default function App() {
   const goCurrent = (i) => {
     setSelected(i);
   };
+  if (showBig) {
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '98vh',
+          opacity: '0.5',
+          backgroundColor: 'lightGray',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+          position: 'relative',
+          transition: 'ease 0.5s',
+          overflow: 'hidden',
+        }}
+      >
+        <button
+          style={{ position: 'absolute', top: '5rem', right: '5rem' }}
+          onClick={() => setShowBig(false)}
+        >
+          &#10060;
+        </button>
+        <img
+          src={data[selected].image}
+          style={{ height: '300px', width: '600px', zIndex: '100' }}
+        />
+      </div>
+    );
+  }
+
   return (
     <div
       style={{
@@ -63,6 +95,9 @@ export default function App() {
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
+        position: 'relative',
+        transition: 'ease 0.5s',
+        overflow: 'hidden',
       }}
     >
       <div style={{ position: 'relative' }}>
@@ -111,6 +146,28 @@ export default function App() {
               }}
               onClick={() => goCurrent(index)}
             ></div>
+          ))}
+      </div>
+      <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'row' }}>
+        {imgData &&
+          imgData.map((item, index) => (
+            <div
+              style={{
+                marginRight: '0.75rem',
+                cursor: 'pointer',
+              }}
+              onClick={() => goCurrent(index)}
+            >
+              <img
+                src={item.image}
+                onClick={() => setShowBig(true)}
+                style={{
+                  height: '120px',
+                  width: '120px',
+                  marginRight: '0.5rem',
+                }}
+              />
+            </div>
           ))}
       </div>
     </div>
